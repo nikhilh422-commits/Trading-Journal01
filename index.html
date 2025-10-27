@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><link rel="manifest" href="manifest.json">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trade Journal</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 20px; background: #f4f4f4; }
+  h1 { text-align: center; }
+  form { background: #fff; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+  input, button, select { margin: 5px 0; padding: 8px; width: 100%; box-sizing: border-box; }
+  table { width: 100%; border-collapse: collapse; margin-top: 10px; background: #fff; border-radius: 8px; overflow: hidden; }
+  th, td { padding: 8px; border-bottom: 1px solid #ccc; text-align: center; }
+  img { border-radius: 4px; }
+  canvas { max-width: 100%; margin-top: 20px; }
+  .type-btns { display: flex; justify-content: space-between; }
+  .type-btn { flex: 1; margin: 5px; padding: 10px; border: none; border-radius: 6px; color: white; cursor: pointer; font-weight: bold; }
+  .buy { background-color: #28a745; }
+  .sell { background-color: #dc3545; }
+  .active { opacity: 1; box-shadow: 0 0 5px #000; }
+  .inactive { opacity: 0.5; }
+  #rrr { font-weight: bold; text-align: center; margin-top: 10px; }
+</style>
+</head>
+<body>
+
+<h1>Trade Journal</h1>
+
+<form id="tradeForm">
+  <div class="type-btns">
+    <button type="button" id="buyBtn" class="type-btn buy active" onclick="setTradeType('Buy')">Buy</button>
+    <button type="button" id="sellBtn" class="type-btn sell inactive" onclick="setTradeType('Sell')">Sell</button>
+  </div>
+
+  <input type="text" id="symbol" placeholder="Symbol (e.g., BTCUSD)" required>
+  <input type="text" id="reason" placeholder="Reason for trade" required>
+  <input type="number" id="entry" placeholder="Entry price" required>
+  <input type="number" id="tp" placeholder="Target price" required>
+  <input type="number" id="sl" placeholder="Stop loss" required>
+  <input type="number" id="position" placeholder="Position size" required>
+  <p id="rrr">RRR: -</p>
+  <input type="file" id="image" accept="image/*">
+  <button type="button" onclick="addTrade()">Add Trade</button>
+</form>
+
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Type</th>
+      <th>Symbol</th>
+      <th>Reason</th>
+      <th>Entry</th>
+      <th>TP</th>
+      <th>SL</th>
+      <th>RRR</th>
+      <th>Position</th>
+      <th>Image</th>
+    </tr>
+  </thead>
+  <tbody id="tradesBody"></tbody>
+</table>
+
+<canvas id="summaryChart" width="400" height="200"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+let tradeType = 'Buy';
+
+function setTradeType(type) {
+  tradeType = type;
+  document.getElementById('buyBtn').classList.toggle('active', type === 'Buy');
+  document.getElementById('buyBtn').classList.toggle('inactive', type !== 'Buy');
+  document.getElementById('sellBtn').classList.toggle
